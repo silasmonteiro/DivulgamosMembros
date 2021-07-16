@@ -1,9 +1,14 @@
 package com.example.divulgamoskids
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.divulgamoskids.database.ContatosDatabase
+import com.example.divulgamoskids.database.selecionarContatos
 import kotlin.collections.listOf
 
 class MainActivity : AppCompatActivity() {
@@ -11,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private val contatoAdapter = ContactAdapter()
 
-
+    private lateinit var database: ContatosDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,16 +26,33 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = contatoAdapter
 
-        val contatos = listOf(
-          Contact("Silas Miranda", "SilasMiranda", "26/06/2021", "04/07/2022"),
-            Contact("lucas Miranda", "lucasMiranda", "26/08/2021", "04/09/2022"),
-            Contact("Amanda Miranda", "AmandaMiranda", "26/03/2021", "04/04/2022"),
-            Contact("Lara Miranda", "LaraMiranda", "26/02/2021", "04/03/2022"),
-            Contact("Milena Miranda", "MilenaMiranda", "26/05/2021", "04/06/2022")
 
-        )
+        database = ContatosDatabase(this)
+
+        val contatos = database.selecionarContatos()
+
         contatoAdapter.updateItems(contatos)
 
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menu_cadastro -> {
+                val intent = Intent(this,CadastroActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> {
+                false
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
