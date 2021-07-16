@@ -29,12 +29,17 @@ class MainActivity : AppCompatActivity() {
 
         database = ContatosDatabase(this)
 
-        val contatos = database.selecionarContatos()
-
-        contatoAdapter.updateItems(contatos)
-
 
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val contatos = database.selecionarContatos()
+        contatoAdapter.updateItems(contatos)
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
