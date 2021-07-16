@@ -41,3 +41,15 @@ fun ContatosDatabase.selecionarContatos(): List<Contact>{
     return returnBanco
 
 }
+
+fun ContatosDatabase.alteracaoContato(item: Contact): Int{
+
+    val valores = ContentValues().apply {
+        put("NOME", item.nome)
+        put("IG", item.ig)
+        put("DATA_ENTRADA", item.dataEntrada)
+        put("DATA_SAIDA", item.dataSaida)
+    }
+
+    return writableDatabase.update("TB_CONTATOS", valores,"ID=${item.id}",null)
+}
